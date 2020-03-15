@@ -1,0 +1,22 @@
+insert into USER(User_name,Pwd,Gender,Authority) VALUE("YY","1234","m","6");
+insert into USER(User_name,Pwd,Gender,Authority) VALUE("HanlinGao","2345","m","6");
+insert into USER(User_name,Pwd,Gender,Authority) VALUE("GuangYaoLiu","3456","m","6");
+insert into VIDEO(Uploader_id,Video_name,Video_url,Intro) value (1,"YY_V","video/1.flv","TestVideo");
+insert into VIDEO(Uploader_id,Video_name,Video_url,Intro) value (2,"Hanlin_V","video/2.flv","TestVideo_Hanlin");
+insert into FOLLOWING value (1,2);
+insert into FOLLOWING value (1,3);
+insert into FOLLOWING value (2,3);
+insert into FOLLOWING value (3,1);
+insert into TAG(Tag_name) value ("Animal");
+insert into TAG(Tag_name) value ("Resort");
+insert into TAG(Tag_name) value ("Human");
+insert into COMMENT(Video_id,User_id,Content) value (1,2,"Good!");
+insert into COMMENT(Video_id,User_id,Content) value (1,2,"(^. ^)!");
+insert into COMMENT(Video_id,User_id,Content) value (2,3,"Nice!");
+insert into RATING VALUE (1,1,4.5);
+insert into RATING VALUE (3,2,5);
+insert into VIDEO_TAG value (1,1);
+insert into VIDEO_TAG value (1,2);
+insert into VIDEO_TAG value (1,3);
+insert into VIDEO_TAG value (2,2);
+
