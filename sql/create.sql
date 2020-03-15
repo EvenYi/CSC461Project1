@@ -5,6 +5,7 @@ CREATE TABLE USER (
     Gender varchar(18),
     Authority varchar(255) NOT NULL
 );
+
 CREATE TABLE VIDEO (
     Vid int PRIMARY KEY AUTO_INCREMENT NOT NULL,
     Uploader_id int NOT NULL,
@@ -14,6 +15,7 @@ CREATE TABLE VIDEO (
     Intro varchar(255),
     FOREIGN KEY (Uploader_id) REFERENCES USER (Uid) ON DELETE CASCADE
 );
+
 CREATE TABLE FOLLOWING (
     User_id int NOT NULL,
     Following_id int NOT NULL,
@@ -21,13 +23,15 @@ CREATE TABLE FOLLOWING (
     FOREIGN KEY (User_id) REFERENCES USER (Uid) ON DELETE CASCADE,
     FOREIGN KEY (Following_id) REFERENCES USER (Uid) ON DELETE CASCADE
 );
+
 CREATE TABLE TAG (
-    T_id int NOT NULL,
-    Tag_name varchar(255) NOT NULL,
+    T_id int NOT NULL AUTO_INCREMENT,
+    Tag_name varchar(255) NOT NULL UNIQUE,
     PRIMARY KEY (T_id)
 );
+
 CREATE TABLE COMMENT (
-    Comment_id int NOT NULL,
+    Comment_id int NOT NULL AUTO_INCREMENT,
     Video_id int NOT NULL,
     User_id int NOT NULL,
     Content TEXT NOT NULL,
@@ -36,6 +40,7 @@ CREATE TABLE COMMENT (
     FOREIGN KEY (Video_id) REFERENCES VIDEO (Vid) ON DELETE CASCADE,
     FOREIGN KEY (User_id) REFERENCES USER (Uid) ON DELETE CASCADE
 );
+
 CREATE TABLE RATING (
     User_id int NOT NULL,
     Video_id int NOT NULL,
@@ -44,6 +49,7 @@ CREATE TABLE RATING (
     FOREIGN KEY (User_id) REFERENCES USER (Uid) ON DELETE CASCADE,
     FOREIGN KEY (Video_id) REFERENCES VIDEO (Vid) ON DELETE CASCADE
 );
+
 CREATE TABLE VIDEO_TAG (
     Video_id int NOT NULL,
     Tag_id int NOT NULL,
