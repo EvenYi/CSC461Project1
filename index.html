@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>&lt;table&gt;布局</title>
+    <style>
+        .alert-title {
+            font-size: 60px;
+            font-weight: 900;
+            line-height: 32px;
+            margin: 30px 0 20px;
+            color: #034688;
+            display: inline-block;
+        }
+
+        .head-background {
+            background-image: url('./img/Head_img.jpg');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: 80% 15%;
+        }
+    </style>
+</head>
+
+<body marginheight="0px" marginwidth="0px">
+    <script>
+        var obj, dbParam, xmlhttp, myObj, x, txt = "";
+        obj = { "limit": 2 };
+        dbParam = JSON.stringify(obj);
+        xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                txt += "<tr style='background-color:#C1CBD7 ;' height='10px'>";
+                txt += "<td colspan='5'>Recently uploaded videos</td>";
+                txt += "</tr>";
+                txt += "<tr style='background-color:#dfd7d7 ;' height='10px'>";
+                txt += "<td>Video_name</td>";
+                txt += "<td>Video_url</td>";
+                txt += "<td>Upload_date</td>";
+                txt += "<td>Intro</td>";
+                txt += "<td>User_name</td>";
+                txt += "</tr>";
+                myObj = JSON.parse(this.responseText);
+                for (x in myObj) {
+                    txt += "<tr style='background-color:#bfbfbf ;' height='10px'>";
+                    txt += "<td>" + myObj[x].Video_name + "</td>";
+                    txt += "<td>" + myObj[x].Video_url + "</td>";
+                    txt += "<td>" + myObj[x].Upload_date + "</td>";
+                    txt += "<td>" + myObj[x].Intro + "</td>";
+                    txt += "<td>" + myObj[x].User_name + "</td>";
+                    txt += "</tr>";
+                }
+                txt += "";
+                document.getElementById('vidoeTable').innerHTML = txt;
+
+            }
+        };
+        xmlhttp.open("POST", "select_video.php", true);
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlhttp.send("x=" + dbParam);
+
+        function searchVideo() {
+            var obj, dbParam, xmlhttp, myObj, x, txt = "";
+
+            obj = { "content": "a" };
+            content = document.getElementById('searchInput').value;
+            if (!content) {
+                alert("Input cannot be empty");
+                return;
+            }
+            obj.content = content;
+            dbParam = JSON.stringify(obj);
+            Sxmlhttp = new XMLHttpRequest();
+            Sxmlhttp.onreadystatechange = function () {
+
+                if (this.readyState == 4 && this.status == 200) {
+                    txt += "<tr style='background-color:#B5C4B1 ;' height='10px'>";
+                    txt += "<td colspan='5'>The search result</td>";
+                    txt += "</tr>";
+                    txt += "<tr style='background-color:#dfd7d7 ;' height='10px'>";
+                    txt += "<td>Video_name</td>";
+                    txt += "<td>Video_url</td>";
+                    txt += "<td>Upload_date</td>";
+                    txt += "<td>Intro</td>";
+                    txt += "<td>User_name</td>";
+                    txt += "</tr>";
+                    myObj = JSON.parse(this.responseText);
+                    for (x in myObj) {
+                        txt += "<tr style='background-color:#bfbfbf ;' height='10px'>";
+                        txt += "<td>" + myObj[x].Video_name + "</td>";
+                        txt += "<td>" + myObj[x].Video_url + "</td>";
+                        txt += "<td>" + myObj[x].Upload_date + "</td>";
+                        txt += "<td>" + myObj[x].Intro + "</td>";
+                        txt += "<td>" + myObj[x].User_name + "</td>";
+                        txt += "</tr>";
+                    }
+                    txt += "";
+                    document.getElementById('searchTable').innerHTML = txt;
+
+                }
+            };
+            Sxmlhttp.open("POST", "search_video.php", true);
+            Sxmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            Sxmlhttp.send("x=" + dbParam);
+
+        }
+
+
+    </script>
+    <table width=100% height="770px" style="background-color: #fff;" cellspacing="2">
+        <tr>
+            <td width="80%" height="15%" style="background-color: #fefefe;" class="head-background">
+
+                <h1 class="alert-title">URTube</h1>
+
+
+            </td>
+            <td width="20%" height="15%" style="background-color:#FFC70A ;">
+            </td>
+        </tr>
+        <tr>
+            <td width="80%" height="75%" style="background-color:#fefefe ;">
+                <input size="60" type="text" id="searchInput">
+                <button onclick="searchVideo()">Search</button>
+                <table align="center" width="100%"  id="searchTable">
+
+                </table>
+                <table align="center" width="100% " height="65%"id="vidoeTable">
+
+                </table>
+
+            </td>
+            <td width="20%" height="75%" style="background-color:#6aa9ff;">
+
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" width="100%" height="10%" style="background-color: #FFC70A;">Foot<br /></td>
+        </tr>
+
+    </table>
+
+
+
+
+</body>
+
+</html>
