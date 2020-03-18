@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>&lt;table&gt;布局</title>
+    <title>URTube</title>
     <style>
         .alert-title {
             font-size: 60px;
@@ -20,21 +20,28 @@
             background-attachment: fixed;
             background-size: 80% 15%;
         }
+
+        .center {
+            margin: auto;
+            width: 80%;
+            border: 3px solid #73AD21;
+            padding: 10px;
+        }
     </style>
 </head>
 
 <body marginheight="0px" marginwidth="0px">
     <script>
-        var obj, dbParam, xmlhttp, myObj, x, txt = "";
+        var obj, dbParam, recentvideo, topratevideo, myObj, x, txt = "";
         obj = { "limit": 2 };
         dbParam = JSON.stringify(obj);
-        xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function () {
+        recentvideo = new XMLHttpRequest();
+        recentvideo.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
-                txt += "<tr style='background-color:#C1CBD7 ;' height='10px'>";
-                txt += "<td colspan='5'>Recently uploaded videos</td>";
+                txt += "<tr align='center' style='background-color:#C1CBD7 ;' height='10px'>";
+                txt += "<td colspan='5'>Recently Uploaded Videos</td>";
                 txt += "</tr>";
-                txt += "<tr style='background-color:#dfd7d7 ;' height='10px'>";
+                txt += "<tr align='center' style='background-color:#dfd7d7 ;' height='10px'>";
                 txt += "<td>Video_name</td>";
                 txt += "<td>Video_url</td>";
                 txt += "<td>Upload_date</td>";
@@ -43,7 +50,7 @@
                 txt += "</tr>";
                 myObj = JSON.parse(this.responseText);
                 for (x in myObj) {
-                    txt += "<tr style='background-color:#bfbfbf ;' height='10px'>";
+                    txt += "<tr align='center' style='background-color:#bfbfbf ;' height='10px'>";
                     txt += "<td>" + myObj[x].Video_name + "</td>";
                     txt += "<td>" + myObj[x].Video_url + "</td>";
                     txt += "<td>" + myObj[x].Upload_date + "</td>";
@@ -56,12 +63,44 @@
 
             }
         };
-        xmlhttp.open("POST", "select_video.php", true);
-        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send("x=" + dbParam);
+        recentvideo.open("POST", "select_video.php", true);
+        recentvideo.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        recentvideo.send("x=" + dbParam);
+
+        obj = { "limit": 10 };
+
+        dbParam = JSON.stringify(obj);
+        topratevideo = new XMLHttpRequest();
+        topratevideo.onreadystatechange = function () {
+            txt = " ";
+            if (this.readyState == 4 && this.status == 200) {
+                txt += "<tr align='center' style='background-color:#C1CBD7 ;' height='10px'>";
+                txt += "<td colspan='5'>Top 5 Rate Videos</td>";
+                txt += "</tr>";
+                txt += "<tr align='center' style='background-color:#dfd7d7 ;' height='10px'>";
+                txt += "<td>VideoID</td>";
+                txt += "<td>Video Name</td>";
+                txt += "<td>Rate</td>";
+                txt += "</tr>";
+                myObj = JSON.parse(this.responseText);
+                for (x in myObj) {
+                    txt += "<tr align='center' style='background-color:#bfbfbf ;' height='10px'>";
+                    txt += "<td>" + myObj[x].Vid + "</td>";
+                    txt += "<td>" + myObj[x].Video_name + "</td>";
+                    txt += "<td>" + Number(myObj[x].Rate).toFixed(2) + "</td>";
+                    txt += "</tr>";
+                }
+                txt += "";
+                document.getElementById('rateTable').innerHTML = txt;
+
+            }
+        };
+        topratevideo.open("POST", "top_rate.php", true);
+        topratevideo.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        topratevideo.send("x=" + dbParam);
 
         function searchVideo() {
-            var obj, dbParam, xmlhttp, myObj, x, txt = "";
+            var obj, dbParam, searchvideo, myObj, x, txt = "";
 
             obj = { "content": "a" };
             content = document.getElementById('searchInput').value;
@@ -71,14 +110,14 @@
             }
             obj.content = content;
             dbParam = JSON.stringify(obj);
-            Sxmlhttp = new XMLHttpRequest();
-            Sxmlhttp.onreadystatechange = function () {
+            searchvideo = new XMLHttpRequest();
+            searchvideo.onreadystatechange = function () {
 
                 if (this.readyState == 4 && this.status == 200) {
-                    txt += "<tr style='background-color:#B5C4B1 ;' height='10px'>";
+                    txt += "<tr align='center' style='background-color:#B5C4B1 ;' height='10px'>";
                     txt += "<td colspan='5'>The search result</td>";
                     txt += "</tr>";
-                    txt += "<tr style='background-color:#dfd7d7 ;' height='10px'>";
+                    txt += "<tr align='center' style='background-color:#dfd7d7 ;' height='10px'>";
                     txt += "<td>Video_name</td>";
                     txt += "<td>Video_url</td>";
                     txt += "<td>Upload_date</td>";
@@ -87,7 +126,7 @@
                     txt += "</tr>";
                     myObj = JSON.parse(this.responseText);
                     for (x in myObj) {
-                        txt += "<tr style='background-color:#bfbfbf ;' height='10px'>";
+                        txt += "<tr align='center' style='background-color:#bfbfbf ;' height='10px'>";
                         txt += "<td>" + myObj[x].Video_name + "</td>";
                         txt += "<td>" + myObj[x].Video_url + "</td>";
                         txt += "<td>" + myObj[x].Upload_date + "</td>";
@@ -100,9 +139,9 @@
 
                 }
             };
-            Sxmlhttp.open("POST", "search_video.php", true);
-            Sxmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            Sxmlhttp.send("x=" + dbParam);
+            searchvideo.open("POST", "search_video.php", true);
+            searchvideo.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            searchvideo.send("x=" + dbParam);
 
         }
 
@@ -121,18 +160,22 @@
         </tr>
         <tr>
             <td width="80%" height="75%" style="background-color:#fefefe ;">
-                <input size="60" type="text" id="searchInput">
-                <button onclick="searchVideo()">Search</button>
-                <table align="center" width="100%"  id="searchTable">
+                <div class="center">
+                    <input size="118" type="text" id="searchInput">
+                    <button onclick="searchVideo()">Search</button>
+                    <table align="center" width="100%" id="searchTable"></table>
+                </div>
+                
 
-                </table>
-                <table align="center" width="100% " height="65%"id="vidoeTable">
+                <table align="center" width="100% " height="65%" id="vidoeTable">
 
                 </table>
 
             </td>
             <td width="20%" height="75%" style="background-color:#6aa9ff;">
+                <table align="center" width="100% " height="65%" id="rateTable">
 
+                </table>
             </td>
         </tr>
         <tr>
