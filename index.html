@@ -51,11 +51,11 @@
                 myObj = JSON.parse(this.responseText);
                 for (x in myObj) {
                     txt += "<tr align='center' style='background-color:#bfbfbf ;' height='10px'>";
-                    txt += "<td>" + myObj[x].Video_name + "</td>";
+                    txt += "<td><a href='http://betaweb.csug.rochester.edu/~yyang123/video.html?Vid=" + myObj[x].Vid + "''>" + myObj[x].Video_name + "</a></td>";
                     txt += "<td>" + myObj[x].Video_url + "</td>";
                     txt += "<td>" + myObj[x].Upload_date + "</td>";
                     txt += "<td>" + myObj[x].Intro + "</td>";
-                    txt += "<td>" + myObj[x].User_name + "</td>";
+                    txt += "<td><a href='http://betaweb.csug.rochester.edu/~yyang123/userinfo.html?Uid=" + myObj[x].Uid + "''>" + myObj[x].User_name + "</a></td>";
                     txt += "</tr>";
                 }
                 txt += "";
@@ -78,15 +78,13 @@
                 txt += "<td colspan='5'>Top 5 Rate Videos</td>";
                 txt += "</tr>";
                 txt += "<tr align='center' style='background-color:#dfd7d7 ;' height='10px'>";
-                txt += "<td>VideoID</td>";
                 txt += "<td>Video Name</td>";
                 txt += "<td>Rate</td>";
                 txt += "</tr>";
                 myObj = JSON.parse(this.responseText);
                 for (x in myObj) {
                     txt += "<tr align='center' style='background-color:#bfbfbf ;' height='10px'>";
-                    txt += "<td>" + myObj[x].Vid + "</td>";
-                    txt += "<td>" + myObj[x].Video_name + "</td>";
+                    txt += "<td><a href='http://betaweb.csug.rochester.edu/~yyang123/video.html?Vid=" + myObj[x].Vid + "''>" + myObj[x].Video_name + "</a></td>";
                     txt += "<td>" + Number(myObj[x].Rate).toFixed(2) + "</td>";
                     txt += "</tr>";
                 }
@@ -127,11 +125,11 @@
                     myObj = JSON.parse(this.responseText);
                     for (x in myObj) {
                         txt += "<tr align='center' style='background-color:#bfbfbf ;' height='10px'>";
-                        txt += "<td>" + myObj[x].Video_name + "</td>";
+                        txt += "<td><a href='http://betaweb.csug.rochester.edu/~yyang123/video.html?Vid=" + myObj[x].Vid + "''>" + myObj[x].Video_name + "</a></td>";
                         txt += "<td>" + myObj[x].Video_url + "</td>";
                         txt += "<td>" + myObj[x].Upload_date + "</td>";
                         txt += "<td>" + myObj[x].Intro + "</td>";
-                        txt += "<td>" + myObj[x].User_name + "</td>";
+                        txt += "<td><a href='http://betaweb.csug.rochester.edu/~yyang123/userinfo.html?Uid=" + myObj[x].Uid + "''>" + myObj[x].User_name + "</a></td>";
                         txt += "</tr>";
                     }
                     txt += "";
@@ -153,31 +151,37 @@
 
                 <h1 class="alert-title">URTube</h1>
 
-
             </td>
             <td width="20%" height="15%" style="background-color:#FFC70A ;">
             </td>
         </tr>
         <tr>
+            <td width="80%" height="5%" style="background-color:#fefefe ;">
+                <a class=".center" href="http://betaweb.csug.rochester.edu/~yyang123/index.html">Home</a>
+            </td>
+            <td rowspan="2" width="20%" height="70%" style="background-color:#6aa9ff;">
+                <table align="center" width="100% " height="65%" id="rateTable">
+
+                </table>
+            </td>
+        </tr>
+        <tr>
             <td width="80%" height="75%" style="background-color:#fefefe ;">
+
                 <div class="center">
                     <input size="118" type="text" id="searchInput">
                     <button onclick="searchVideo()">Search</button>
                     <table align="center" width="100%" id="searchTable"></table>
                 </div>
-                
+
 
                 <table align="center" width="100% " height="65%" id="vidoeTable">
 
                 </table>
 
             </td>
-            <td width="20%" height="75%" style="background-color:#6aa9ff;">
-                <table align="center" width="100% " height="65%" id="rateTable">
-
-                </table>
-            </td>
         </tr>
+
         <tr>
             <td colspan="2" width="100%" height="10%" style="background-color: #FFC70A;">Foot<br /></td>
         </tr>

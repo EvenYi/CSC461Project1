@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>URTube</title>
+    <style>
+        .alert-title {
+            font-size: 60px;
+            font-weight: 900;
+            line-height: 32px;
+            margin: 30px 0 20px;
+            color: #034688;
+            display: inline-block;
+        }
+
+        .head-background {
+            background-image: url('./img/Head_img.jpg');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: 80% 15%;
+        }
+
+        .center {
+            margin: auto;
+            width: 80%;
+            border: 3px solid #6aa9ff;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body marginheight="0px" marginwidth="0px">
+    <script>
+        var user_id = getUrlVars()["Uid"];
+        function getUrlVars() {
+            var vars = {};
+            var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+                vars[key] = value;
+            });
+            return vars;
+        }
+
+        var obj, dbParam, recentvideo, topratevideo, myObj, x, txt = "";
+        obj = { "Uid": user_id };
+        dbParam = JSON.stringify(obj);
+
+        userinfo = new XMLHttpRequest();
+        userinfo.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                txt += "<tr align='center' style='background-color:#C1CBD7 ;' height='10px'>";
+                txt += "<td colspan='5'>User Information</td>";
+                txt += "</tr>";
+                txt += "<tr align='center' style='background-color:#dfd7d7 ;' height='10px'>";
+                txt += "<td>User Name</td>";
+                txt += "<td>Gender</td>";
+                txt += "<td>LV</td>";
+                txt += "</tr>";
+                myObj = JSON.parse(this.responseText);
+                for (x in myObj) {
+                    txt += "<tr align='center' style='background-color:#bfbfbf ;' height='10px'>";
+                    txt += "<td><a href='http://betaweb.csug.rochester.edu/~yyang123/userinfo.html?Uid=" + myObj[x].Uid + "''>" + myObj[x].User_name + "</a></td>";
+                    txt += "<td>" + myObj[x].Gender + "</td>";
+                    txt += "<td>" + myObj[x].Authority + "</td>";
+                    txt += "</tr>";
+                }
+                txt += "";
+                document.getElementById('userinfoTable').innerHTML = txt;
+
+            }
+        };
+        userinfo.open("POST", "userinfo.php", true);
+        userinfo.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        userinfo.send("x=" + dbParam);
+
+        usercomment = new XMLHttpRequest();
+        usercomment.onreadystatechange = function () {
+            txt = "";
+            if (this.readyState == 4 && this.status == 200) {
+                txt += "<tr align='center' style='background-color:#C1CBD7 ;' height='10px'>";
+                txt += "<td colspan='5'>His/Her Released Comments</td>";
+                txt += "</tr>";
+                txt += "<tr align='center' style='background-color:#dfd7d7 ;' height='10px'>";
+                txt += "<td>Video Name</td>";
+                txt += "<td>Comment</td>";
+                txt += "<td>Release Date</td>";
+                txt += "</tr>";
+                myObj = JSON.parse(this.responseText);
+                for (x in myObj) {
+                    txt += "<tr align='center' style='background-color:#bfbfbf ;' height='10px'>";
+                    txt += "<td><a href='http://betaweb.csug.rochester.edu/~yyang123/video.html?Vid=" + myObj[x].Vid + "''>" + myObj[x].Video_name + "</a></td>";
+                    txt += "<td>" + myObj[x].Content + "</td>";
+                    txt += "<td>" + myObj[x].Release_date + "</td>";
+                    txt += "</tr>";
+                }
+                txt += "";
+                document.getElementById('usercommentTable').innerHTML = txt;
+
+            }
+        };
+        usercomment.open("POST", "usercomment.php", true);
+        usercomment.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        usercomment.send("x=" + dbParam);
+
+        userupload = new XMLHttpRequest();
+        userupload.onreadystatechange = function () {
+            txt = "";
+            if (this.readyState == 4 && this.status == 200) {
+                txt += "<tr align='center' style='background-color:#C1CBD7 ;' height='10px'>";
+                txt += "<td colspan='5'>His/Her Uploaded Videos</td>";
+                txt += "</tr>";
+                myObj = JSON.parse(this.responseText);
+                for (x in myObj) {
+                    txt += "<tr align='center' style='background-color:#bfbfbf ;' height='10px'>";
+                    txt += "<td><a href='http://betaweb.csug.rochester.edu/~yyang123/video.html?Vid=" + myObj[x].Vid + "''>" + myObj[x].Video_name + "</a></td>";
+                    txt += "</tr>";
+                }
+                txt += "";
+                document.getElementById('useruploadTable').innerHTML = txt;
+
+            }
+        };
+        userupload.open("POST", "userupload.php", true);
+        userupload.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        userupload.send("x=" + dbParam);
+    </script>
+    <table width=100% height="770px" style="background-color: #fff;" cellspacing="2">
+        <tr>
+            <td width="80%" height="15%" style="background-color: #fefefe;" class="head-background">
+
+                <h1 class="alert-title">URTube</h1>
+
+
+            </td>
+            <td width="20%" height="15%" style="background-color:#FFC70A ;">
+            </td>
+        </tr>
+        <tr>
+            <td width="80%" height="5%" style="background-color:#fefefe ;">
+                <a class=".center" href="http://betaweb.csug.rochester.edu/~yyang123/index.html">Home</a>
+            </td>
+            <td rowspan="2" width="20%" height="70%" style="background-color:#6aa9ff;">
+                <table width="100% " height="65%" id="useruploadTable">
+
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            <div class=".center">
+                <table width="100% " height="65%" id="userinfoTable">
+
+                </table>
+                <table width="100% " height="65%" id="usercommentTable">
+
+                </table>
+            </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" width="100%" height="10%" style="background-color: #FFC70A;">Foot<br /></td>
+        </tr>
+
+    </table>
+
+
+
+
+</body>
+
+</html>

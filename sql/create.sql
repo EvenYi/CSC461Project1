@@ -35,7 +35,7 @@ CREATE TABLE COMMENT (
     Video_id int NOT NULL,
     User_id int NOT NULL,
     Content TEXT NOT NULL,
-    Realease_date TIMESTAMP NOT NULL,
+    Release_date TIMESTAMP NOT NULL,
     PRIMARY KEY (Comment_id),
     FOREIGN KEY (Video_id) REFERENCES VIDEO (Vid) ON DELETE CASCADE,
     FOREIGN KEY (User_id) REFERENCES USER (Uid) ON DELETE CASCADE

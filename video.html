@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>URTube</title>
+    <style>
+        .alert-title {
+            font-size: 60px;
+            font-weight: 900;
+            line-height: 32px;
+            margin: 30px 0 20px;
+            color: #034688;
+            display: inline-block;
+        }
+
+        .head-background {
+            background-image: url('./img/Head_img.jpg');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: 80% 15%;
+        }
+
+        .center {
+            margin: auto;
+            width: 80%;
+            border: 3px solid #6aa9ff;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body marginheight="0px" marginwidth="0px">
+    <script>
+        var video_id = getUrlVars()["Vid"];
+        function getUrlVars() {
+            var vars = {};
+            var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+                vars[key] = value;
+            });
+            return vars;
+        }
+
+        var obj, dbParam, recentvideo, topratevideo, myObj, x, txt = "";
+        obj = { "Vid": video_id };
+        dbParam = JSON.stringify(obj);
+        videoinfo = new XMLHttpRequest();
+        videoinfo.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                txt += "<tr align='center' style='background-color:#C1CBD7 ;' height='10px'>";
+                txt += "<td colspan='5'>Video Information</td>";
+                txt += "</tr>";
+                txt += "<tr align='center' style='background-color:#dfd7d7 ;' height='10px'>";
+                txt += "<td>Video_name</td>";
+                txt += "<td>Video_url</td>";
+                txt += "<td>Upload_date</td>";
+                txt += "<td>Intro</td>";
+                txt += "<td>User_name</td>";
+                txt += "</tr>";
+                myObj = JSON.parse(this.responseText);
+                for (x in myObj) {
+                    txt += "<tr align='center' style='background-color:#bfbfbf ;' height='10px'>";
+                    txt += "<td><a href='http://betaweb.csug.rochester.edu/~yyang123/video.html?Vid=" + myObj[x].Vid + "''>" + myObj[x].Video_name + "</a></td>";
+                    txt += "<td>" + myObj[x].Video_url + "</td>";
+                    txt += "<td>" + myObj[x].Upload_date + "</td>";
+                    txt += "<td>" + myObj[x].Intro + "</td>";
+                    txt += "<td><a href='http://betaweb.csug.rochester.edu/~yyang123/userinfo.html?Uid=" + myObj[x].Uid + "''>" + myObj[x].User_name + "</a></td>";
+                    txt += "</tr>";
+                }
+                txt += "";
+                document.getElementById('videoinfoTable').innerHTML = txt;
+
+            }
+        };
+        videoinfo.open("POST", "videoinfo.php", true);
+        videoinfo.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        videoinfo.send("x=" + dbParam);
+
+        videocomment = new XMLHttpRequest();
+        videocomment.onreadystatechange = function () {
+            txt = "";
+            if (this.readyState == 4 && this.status == 200) {
+                txt += "<tr align='center' style='background-color:#C1CBD7 ;' height='10px'>";
+                txt += "<td colspan='5'>Video Comments</td>";
+                txt += "</tr>";
+                txt += "<tr align='center' style='background-color:#dfd7d7 ;' height='10px'>";
+                txt += "<td>User Name</td>";
+                txt += "<td>Comment</td>";
+                txt += "<td>Release Date</td>";
+                txt += "</tr>";
+                myObj = JSON.parse(this.responseText);
+                for (x in myObj) {
+                    txt += "<tr align='center' style='background-color:#bfbfbf ;' height='10px'>";
+                    txt += "<td><a href='http://betaweb.csug.rochester.edu/~yyang123/userinfo.html?Uid=" + myObj[x].Uid + "''>" + myObj[x].User_name + "</a></td>";
+                    txt += "<td>" + myObj[x].Content + "</td>";
+                    txt += "<td>" + myObj[x].Release_date + "</td>";
+                    txt += "</tr>";
+                }
+                txt += "";
+                document.getElementById('videocommentTable').innerHTML = txt;
+
+            }
+        };
+        videocomment.open("POST", "videocomment.php", true);
+        videocomment.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        videocomment.send("x=" + dbParam);
+
+        videotag = new XMLHttpRequest();
+        videotag.onreadystatechange = function () {
+            txt = "";
+            if (this.readyState == 4 && this.status == 200) {
+                txt += "<tr align='center' style='background-color:#C1CBD7 ;' height='10px'>";
+                txt += "<td colspan='5'>Video Tags</td>";
+                txt += "</tr>";
+                myObj = JSON.parse(this.responseText);
+                for (x in myObj) {
+                    txt += "<tr align='center' style='background-color:#bfbfbf ;' height='10px'>";
+                    txt += "<td><a href='http://betaweb.csug.rochester.edu/~yyang123/search.html?Tid=" + myObj[x].Tag_id + "''>" + myObj[x].Tag_name + "</a></td>";
+                    txt += "</tr>";
+                }
+                txt += "";
+                document.getElementById('videotagTable').innerHTML = txt;
+
+            }
+        };
+        videotag.open("POST", "videotag.php", true);
+        videotag.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        videotag.send("x=" + dbParam);
+    </script>
+    <table width=100% height="770px" style="background-color: #fff;" cellspacing="2">
+        <tr>
+            <td width="80%" height="15%" style="background-color: #fefefe;" class="head-background">
+
+                <h1 class="alert-title">URTube</h1>
+
+
+            </td>
+            <td width="20%" height="15%" style="background-color:#FFC70A ;">
+            </td>
+        </tr>
+        <tr>
+            <td width="80%" height="5%" style="background-color:#fefefe ;">
+                <a class=".center" href="http://betaweb.csug.rochester.edu/~yyang123/index.html">Home</a>
+            </td>
+            <td rowspan="2" width="20%" height="70%" style="background-color:#6aa9ff;">
+                <table width="100% " height="65%" id="videotagTable">
+
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            <div class=".center">
+                <table width="100% " height="65%" id="videoinfoTable">
+
+                </table>
+                <table width="100% " height="65%" id="videocommentTable">
+
+                </table>
+            </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" width="100%" height="10%" style="background-color: #FFC70A;">Foot<br /></td>
+        </tr>
+
+    </table>
+
+
+
+
+</body>
+
+</html>
