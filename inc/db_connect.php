@@ -20,17 +20,17 @@ function execute_bool($link,$query)
 {
     $result=mysqli_real_query($link,$query);
     if(mysqli_errno($link)){
-        exit(mysqli_error($link));
+        return ;
     }
     return $result;
 
 }
 function  execute_multi($link,$mult_sql)
 {
-    if ($link->multi_query($sql) === TRUE) {
+    if ($link->multi_query($mult_sql) === TRUE) {
         echo "New records created successfully";
     } else {
-        echo "Error: " . $sql . "<br>" . $link->error;
+        echo "Error: " . $mult_sql . "<br>" . $link->error;
     }
     
     $link->close();

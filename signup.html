@@ -26,8 +26,8 @@
             background-color: #FFC70A;
             border: 10px solid #6aa9ff;
             position: absolute;
-            top: 30%;
-            left: 35%;
+            top: 25%;
+            left: 33%;
             margin: auto;
         }
 
@@ -53,17 +53,21 @@
                 </td>
                 <td align='center'>
                     <input type="text" id="username" name="username">
+
                 </td>
                 <td align='center'>
                     <button onclick="checkname()">Check Name</button>
                 </td>
+            </tr>
+            <tr align='center' id="checkresult">
+
             </tr>
             <tr>
                 <td align='center'>
                     <h3>Password: </h3>
                 </td>
                 <td align='center'>
-                    <input type="password" id="pwd" name="password">
+                    <input type="password" id="pwd1" name="password">
                 </td>
             </tr>
             <tr>
@@ -71,8 +75,11 @@
                     <h3>Confirm Password: </h3>
                 </td>
                 <td align='center'>
-                    <input type="password" id="pwd" name="password">
+                    <input type="password" id="pwd2" name="password">
                 </td>
+            </tr>
+            <tr align='center' id="checkpwd">
+
             </tr>
             <tr>
                 <td align='center'>
@@ -80,8 +87,8 @@
                 </td>
                 <td align='center'>
                     <select id="gender">
-                        <option value="M">Male</option>
-                        <option value="F">Female</option>
+                        <option value="m">Male</option>
+                        <option value="f">Female</option>
                     </select>
                 </td>
             </tr>
@@ -99,21 +106,93 @@
 
     </div>
     <script>
-        function submitinfo() {
-
-        }
         function backhome() {
             location.replace("./index.html");
         }
         function checkname() {
+            var username;
+            var result;
+            username = document.getElementById('username').value;
+            if (!username) {
+                alert("User name cannot be empty!")
+                return -1;
+
+            }
+            var obj, dbParam, recentvideo, topratevideo, myObj, x, txt = "";
+            obj = { "username": username };
+            dbParam = JSON.stringify(obj);
+            checkusername = new XMLHttpRequest();
+            checkusername.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    myObj = JSON.parse(this.responseText);
+                    if (Object.keys(myObj).length != 0) {
+                        txt += "<td bgcolor='#FF0000' colspan='3' >User name alread exist</td>";
+                        document.getElementById('checkresult').innerHTML = txt;
+
+
+                    } else {
+                        txt += "<td bgcolor='#00FF00' colspan='3'>You can use this user name</td>";
+                        document.getElementById('checkresult').innerHTML = txt;
+
+                    }
+                }
+            };
+            checkusername.open("POST", "checkname.php", true);
+            checkusername.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            checkusername.send("x=" + dbParam);
+        }
+        function submitinfo() {
+            var username, pwd1, pwd2, gender, txt = "";
+            username = document.getElementById('username').value;
+            pwd1 = document.getElementById('pwd1').value;
+            pwd2 = document.getElementById('pwd2').value;
+            gender = document.getElementById('gender').value;
+            console.log(pwd1);
+            console.log(pwd2);
+            console.log(gender);
+            if (!pwd1 || !pwd2) {
+                alert("Password cannot be empty!")
+                return;
+            }
+            if (pwd1 !== pwd2) {
+                txt += "<td bgcolor='#FF0000' colspan='3' >Inconsistent passwords</td>";
+                document.getElementById('checkpwd').innerHTML = txt;
+                return;
+            } else {
+                txt += "<td bgcolor='#00FF00' colspan='3' >Consistent passwords</td>";
+                document.getElementById('checkpwd').innerHTML = txt;
+            }
+
+            var obj, dbParam, recentvideo, topratevideo, myObj, x, txt = "";
+            obj = { "username": username, "pwd": pwd1, "gender": gender };
+            dbParam = JSON.stringify(obj);
+            signupuser = new XMLHttpRequest();
+            signupuser.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    myObj = JSON.parse(this.responseText);
+                    if(myObj.result){
+                        alert("Registration Success!");
+                        location.replace("./login.html");
+
+                    }
+                    else{
+                        alert("Registration Fail!");
+                        txt ="";
+                        txt += "<td bgcolor='#FF0000' colspan='3' >Please Check User Name</td>";
+                        document.getElementById('checkpwd').innerHTML = txt;
+
+                    }
+
+
+                }
+            };
+            signupuser.open("POST", "signup.php", true);
+            signupuser.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            signupuser.send("x=" + dbParam);
+
 
         }
     </script>
-
-
-
-
-
 </body>
 
 </html>
