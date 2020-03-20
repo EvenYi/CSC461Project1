@@ -1,6 +1,6 @@
 CREATE TABLE USER (
     Uid int PRIMARY KEY AUTO_INCREMENT,
-    User_name varchar(255) NOT NULL,
+    User_name varchar(255) NOT NULL UNIQUE,
     Pwd varchar(255) NOT NULL,
     Gender varchar(18),
     Authority varchar(255) NOT NULL
