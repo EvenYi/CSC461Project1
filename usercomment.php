@@ -8,5 +8,6 @@ $sql = "SELECT Vid, Video_name, Content, Release_date FROM COMMENT JOIN VIDEO ON
 $sql = $sql.$obj->Uid." ;";
 $result = execute_sql($conn,$sql);
 $outp = $result->fetch_all(MYSQLI_ASSOC);
+mysqli_close($conn);
 echo json_encode($outp);
 ?>

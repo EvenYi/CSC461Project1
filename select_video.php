@@ -11,7 +11,7 @@ $conn=connection();
 $sql = "SELECT Vid,Video_name,Video_url,Upload_date,Intro,Uid,User_name FROM VIDEO, USER WHERE Uid = Uploader_id ORDER BY Upload_date DESC LIMIT 10;";
 $result = execute_sql($conn,$sql);
 $outp = $result->fetch_all(MYSQLI_ASSOC);
-
+mysqli_close($conn);
 echo json_encode($outp);
                
 

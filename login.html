@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>URTube</title>
+    <style>
+        .alert-title {
+            font-size: 60px;
+            font-weight: 900;
+            line-height: 32px;
+            margin: 30px 0 20px;
+            color: #034688;
+            display: inline-block;
+        }
+
+        body {
+            background-image: url('./img/Login_BG.jpg');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: 100% 100%;
+        }
+
+        .center {
+            opacity: 0.85;
+            background-color: #FFC70A;
+            border: 10px solid #6aa9ff;
+            position: absolute;
+            top: 35%;
+            left: 35%;
+            margin-top: -50px;
+            margin-left: -50px;
+            width: 450px;
+            height: 250px;
+        }
+
+        table {
+            margin: 0 auto;
+            /* or margin: 0 auto 0 auto */
+        }
+    </style>
+</head>
+
+<body marginheight="0px" marginwidth="0px">
+    <script src="./inc/cookie.js"></script>
+    <div class="center">
+        <table>
+            <tr>
+                <td colspan="2" align='center'>
+                    <h1><a href="./index.html">Welcome to URTube</a></h1>
+                </td>
+            </tr>
+            <tr>
+                <td align='center'>
+                    <h3>UserName:</h3>
+                </td>
+                <td align='center'>
+                    <input type="text" id="username" name="username">
+                </td>
+            </tr>
+            <tr>
+                <td align='center'>
+                    <h3>Password: </h3>
+                </td>
+                <td align='center'>
+                    <input type="password" id="pwd" name="password">
+                </td>
+            </tr>
+            <tr>
+                <td align='center'>
+                    <button onclick="signup()">SIGN UP</button>
+
+                </td>
+                <td align='center'>
+                    <button onclick="login()">LOGIN</button>
+
+                </td>
+            </tr>
+            <table>
+
+    </div>
+    <script>
+        function signup() {
+            location.replace("./signup.html");
+        }
+        function login() {
+            var username, pwd;
+            username = document.getElementById('username').value;
+            pwd = document.getElementById('pwd').value;
+            var obj, dbParam, recentvideo, topratevideo, myObj, x, txt = "";
+            obj = { "username": username, "pwd": pwd };
+            dbParam = JSON.stringify(obj);
+            loginverify = new XMLHttpRequest();
+            loginverify.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    myObj = JSON.parse(this.responseText);
+                    console.log(myObj);
+                    if (Object.keys(myObj).length == 0) {
+                        alert("User name or password incorrect!");
+                        return;
+
+                    }
+                    for (x in myObj) {
+                        deleteAllCookies();
+                        setCookie(myObj[x].Uid, myObj[x].User_name, myObj[x].Authority, 1);
+                        location.replace("./index.html");
+                    }
+
+                }
+            };
+            loginverify.open("POST", "login.php", true);
+            loginverify.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            loginverify.send("x=" + dbParam);
+        }
+    </script>
+
+
+
+
+
+</body>
+
+</html>

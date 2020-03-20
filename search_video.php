@@ -9,5 +9,6 @@ $sql = "SELECT Vid,Video_name,Video_url,Upload_date,Intro,Uid,User_name FROM VID
 $sql = $sql.$obj->content."%' ORDER BY Upload_date DESC;";
 $result = execute_sql($conn,$sql);
 $outp = $result->fetch_all(MYSQLI_ASSOC);
+mysqli_close($conn);
 echo json_encode($outp);
 ?>

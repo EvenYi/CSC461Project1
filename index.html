@@ -21,17 +21,114 @@
             background-size: 80% 15%;
         }
 
+        .mainblockcenter {
+            margin: auto;
+            border: 3px solid #FFC70A;
+            background-color: #fff;
+            opacity: 0.95;
+        }
+
         .center {
             margin: auto;
             width: 80%;
             border: 3px solid #73AD21;
             padding: 10px;
         }
+
+        .navigate {
+            margin: auto;
+            border: 3px solid #6aa9ff;
+            padding: 10px;
+            align-items: center;
+        }
+
+        .mainblock {
+            background-image: url("./img/mainclock_BG.jpg");
+            background-color: #cccccc;
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            background-attachment: fixed;
+        }
+
+        table {
+            margin: 0 auto;
+            /* or margin: 0 auto 0 auto */
+        }
     </style>
 </head>
 
 <body marginheight="0px" marginwidth="0px">
+    <script src="./inc/cookie.js"></script>
+    <table width=100% height="770px" style="background-color: #fff;" cellspacing="2">
+        <tr>
+            <td width="80%" height="15%" style="background-color: #fefefe;" class="head-background">
+
+                <h1 class="alert-title">URTube</h1>
+
+            </td>
+            <td width="20%" height="15%" style="background-color:#FFC70A ;">
+                <div>
+                    <table id="loginTable"></table>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td width="80%" height="5%" style="background-color:#fefefe ;">
+                <div class="navigate">
+                    <a class=".center" href="./index.html">Home</a>
+                    <div>
+            </td>
+            <td rowspan="2" width="20%" height="70%" style="background-color:#6aa9ff;">
+                <table align="center" width="100% " height="65%" id="rateTable">
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td width="80%" height="70%" class="mainblock">
+                <div class="mainblockcenter">
+                    <div class="center">
+                        <input size="118" type="text" id="searchInput">
+                        <button onclick="searchVideo()">Search</button>
+                        <table align="center" width="100%" id="searchTable"></table>
+                    </div>
+
+
+                    <table align="center" width="100% " height="65%" id="vidoeTable">
+
+                    </table>
+                </div>
+
+            </td>
+        </tr>
+
+        <tr>
+            <td align="center" colspan="2" width="100%" height="10%" style="background-color: #FFC70A;">Yi Yang, Hanlin Gao, GuangYao Liu<br /></td>
+        </tr>
+
+    </table>
     <script>
+        var login_txt = "";
+        if (checkCookie()) {
+            var username, uid, lv;
+            uid = getCookie("uid");
+            username = getCookie("username");
+            lv = getCookie("lv");
+            login_txt += "<tr align='center'><td><a href='./user.html?uid=" + uid + "'>" + username + "</a></td>";
+            login_txt += "<td><button onclick='signout()'>Sign Out</button></td></tr>";
+            console.log(uid);
+            console.log(username);
+            console.log(lv);
+            console.log(login_txt);
+            document.getElementById('loginTable').innerHTML = login_txt;
+
+        } else {
+
+            login_txt += "<tr align='center'><td><a href='./login.html'>LOGIN</a></td></tr>"
+            document.getElementById('loginTable').innerHTML = login_txt;
+        }
+
+
+
         var obj, dbParam, recentvideo, topratevideo, myObj, x, txt = "";
         obj = { "limit": 2 };
         dbParam = JSON.stringify(obj);
@@ -51,11 +148,11 @@
                 myObj = JSON.parse(this.responseText);
                 for (x in myObj) {
                     txt += "<tr align='center' style='background-color:#bfbfbf ;' height='10px'>";
-                    txt += "<td><a href='http://betaweb.csug.rochester.edu/~yyang123/video.html?Vid=" + myObj[x].Vid + "''>" + myObj[x].Video_name + "</a></td>";
+                    txt += "<td><a href='./video.html?Vid=" + myObj[x].Vid + "''>" + myObj[x].Video_name + "</a></td>";
                     txt += "<td>" + myObj[x].Video_url + "</td>";
                     txt += "<td>" + myObj[x].Upload_date + "</td>";
                     txt += "<td>" + myObj[x].Intro + "</td>";
-                    txt += "<td><a href='http://betaweb.csug.rochester.edu/~yyang123/userinfo.html?Uid=" + myObj[x].Uid + "''>" + myObj[x].User_name + "</a></td>";
+                    txt += "<td><a href='./userinfo.html?Uid=" + myObj[x].Uid + "''>" + myObj[x].User_name + "</a></td>";
                     txt += "</tr>";
                 }
                 txt += "";
@@ -84,7 +181,7 @@
                 myObj = JSON.parse(this.responseText);
                 for (x in myObj) {
                     txt += "<tr align='center' style='background-color:#bfbfbf ;' height='10px'>";
-                    txt += "<td><a href='http://betaweb.csug.rochester.edu/~yyang123/video.html?Vid=" + myObj[x].Vid + "''>" + myObj[x].Video_name + "</a></td>";
+                    txt += "<td><a href='./video.html?Vid=" + myObj[x].Vid + "''>" + myObj[x].Video_name + "</a></td>";
                     txt += "<td>" + Number(myObj[x].Rate).toFixed(2) + "</td>";
                     txt += "</tr>";
                 }
@@ -125,11 +222,11 @@
                     myObj = JSON.parse(this.responseText);
                     for (x in myObj) {
                         txt += "<tr align='center' style='background-color:#bfbfbf ;' height='10px'>";
-                        txt += "<td><a href='http://betaweb.csug.rochester.edu/~yyang123/video.html?Vid=" + myObj[x].Vid + "''>" + myObj[x].Video_name + "</a></td>";
+                        txt += "<td><a href='./video.html?Vid=" + myObj[x].Vid + "''>" + myObj[x].Video_name + "</a></td>";
                         txt += "<td>" + myObj[x].Video_url + "</td>";
                         txt += "<td>" + myObj[x].Upload_date + "</td>";
                         txt += "<td>" + myObj[x].Intro + "</td>";
-                        txt += "<td><a href='http://betaweb.csug.rochester.edu/~yyang123/userinfo.html?Uid=" + myObj[x].Uid + "''>" + myObj[x].User_name + "</a></td>";
+                        txt += "<td><a href='./userinfo.html?Uid=" + myObj[x].Uid + "''>" + myObj[x].User_name + "</a></td>";
                         txt += "</tr>";
                     }
                     txt += "";
@@ -142,54 +239,7 @@
             searchvideo.send("x=" + dbParam);
 
         }
-
-
     </script>
-    <table width=100% height="770px" style="background-color: #fff;" cellspacing="2">
-        <tr>
-            <td width="80%" height="15%" style="background-color: #fefefe;" class="head-background">
-
-                <h1 class="alert-title">URTube</h1>
-
-            </td>
-            <td width="20%" height="15%" style="background-color:#FFC70A ;">
-            </td>
-        </tr>
-        <tr>
-            <td width="80%" height="5%" style="background-color:#fefefe ;">
-                <a class=".center" href="http://betaweb.csug.rochester.edu/~yyang123/index.html">Home</a>
-            </td>
-            <td rowspan="2" width="20%" height="70%" style="background-color:#6aa9ff;">
-                <table align="center" width="100% " height="65%" id="rateTable">
-
-                </table>
-            </td>
-        </tr>
-        <tr>
-            <td width="80%" height="75%" style="background-color:#fefefe ;">
-
-                <div class="center">
-                    <input size="118" type="text" id="searchInput">
-                    <button onclick="searchVideo()">Search</button>
-                    <table align="center" width="100%" id="searchTable"></table>
-                </div>
-
-
-                <table align="center" width="100% " height="65%" id="vidoeTable">
-
-                </table>
-
-            </td>
-        </tr>
-
-        <tr>
-            <td colspan="2" width="100%" height="10%" style="background-color: #FFC70A;">Foot<br /></td>
-        </tr>
-
-    </table>
-
-
-
 
 </body>
 

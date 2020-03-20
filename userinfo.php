@@ -8,5 +8,6 @@ $sql = " SELECT Uid, User_name, Gender, Authority FROM USER WHERE Uid=";
 $sql = $sql.$obj->Uid." ;";
 $result = execute_sql($conn,$sql);
 $outp = $result->fetch_all(MYSQLI_ASSOC);
+mysqli_close($conn);
 echo json_encode($outp);
 ?>
