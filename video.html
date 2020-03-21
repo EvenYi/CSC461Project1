@@ -27,6 +27,7 @@
             border: 3px solid #6aa9ff;
             padding: 10px;
         }
+
         .mainblockcenter {
             margin: auto;
             border: 3px solid #FFC70A;
@@ -38,6 +39,13 @@
             margin: auto;
             border: 3px solid #6aa9ff;
             padding: 10px;
+            align-items: center;
+        }
+
+        .navigateblock {
+            margin: auto;
+            border: 3px solid #FFC70A;
+            padding: 6px;
             align-items: center;
         }
 
@@ -57,6 +65,11 @@
 </head>
 
 <body marginheight="0px" marginwidth="0px">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
     <script src="./inc/cookie.js"></script>
     <table width=100% height="770px" style="background-color: #fff;" cellspacing="2">
         <tr>
@@ -75,7 +88,8 @@
         <tr>
             <td width="80%" height="5%" style="background-color:#fefefe ;">
                 <div class="navigate">
-                    <a class=".center" href="./index.html">Home</a>
+                    <a class="navigateblock" href="./index.html">Home</a>
+                    <a class="navigateblock" href="./signup.html">Sign Up</a>
                 </div>
             </td>
             <td rowspan="2" width="20%" height="70%" style="background-color:#6aa9ff;">
@@ -97,7 +111,8 @@
             </td>
         </tr>
         <tr>
-            <td align="center" colspan="2" width="100%" height="10%" style="background-color: #FFC70A;">Yi Yang, Hanlin Gao, GuangYao Liu<br /></td>
+            <td align="center" colspan="2" width="100%" height="10%" style="background-color: #FFC70A;">Yi Yang, Hanlin
+                Gao, GuangYao Liu<br /></td>
         </tr>
 
     </table>
@@ -108,7 +123,7 @@
             uid = getCookie("uid");
             username = getCookie("username");
             lv = getCookie("lv");
-            login_txt += "<tr align='center'><td><a href='./user.html?uid=" + uid + "'>" + username + "</a></td>";
+            login_txt += "<tr align='center'><td><a href='./user.html?Uid=" + uid + "'>" + username + "</a></td>";
             login_txt += "<td><button onclick='signout()'>Sign Out</button></td></tr>";
             console.log(uid);
             console.log(username);
