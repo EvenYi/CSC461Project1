@@ -13,14 +13,19 @@ $conn = connection();
     <style>
         table {
             margin: auto;
-            border: 3px solid #6aa9ff;
-            
+            border: 1px solid #6aa9ff;
+
             /* or margin: 0 auto 0 auto */
         }
     </style>
 </head>
 
 <body>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <h4 align="center">We have 7 Tables: USER, VIDEO, COMMENT, VIDEO_TAG, TAG, RATING and FOLLOWING table.</h4>
+    <h4 align="center">All Tables Just Show 5 Rows</h4>
+    <h4 align="center"><a href="./index.html">Go to the URTube</a></h4>
     <table border="1">
         <tr align="center">
             <td colspan="5">USER Table</td>
@@ -57,7 +62,7 @@ $conn = connection();
         $sql = " SELECT * FROM VIDEO LIMIT 5;";
         $result = execute_sql($conn, $sql);
         while ($row = mysqli_fetch_assoc($result)) {
-            echo "<tr><td>" . $row['Vid'] . "</td><td>" . $row['Uploader_id'] . "</td><td>" . $row['Video_name'] . "</td><td>" . $row['Video_url'] . "</td><td>" . $row['Upload_date'] . "</td><td>" . $row['Intro']. "</td></tr>";
+            echo "<tr><td>" . $row['Vid'] . "</td><td>" . $row['Uploader_id'] . "</td><td>" . $row['Video_name'] . "</td><td>" . $row['Video_url'] . "</td><td>" . $row['Upload_date'] . "</td><td>" . $row['Intro'] . "</td></tr>";
         }
         ?>
     </table>
@@ -94,7 +99,7 @@ $conn = connection();
         $sql = " SELECT * FROM VIDEO_TAG LIMIT 5;";
         $result = execute_sql($conn, $sql);
         while ($row = mysqli_fetch_assoc($result)) {
-            echo "<tr><td>" . $row['Video_id'] . "</td><td>" . $row['Tag_id']. "</td></tr>";
+            echo "<tr><td>" . $row['Video_id'] . "</td><td>" . $row['Tag_id'] . "</td></tr>";
         }
         ?>
     </table>
@@ -111,7 +116,7 @@ $conn = connection();
         $sql = " SELECT * FROM TAG LIMIT 5;";
         $result = execute_sql($conn, $sql);
         while ($row = mysqli_fetch_assoc($result)) {
-            echo "<tr><td>" . $row['T_id'] . "</td><td>" . $row['Tag_name']. "</td></tr>";
+            echo "<tr><td>" . $row['T_id'] . "</td><td>" . $row['Tag_name'] . "</td></tr>";
         }
         ?>
     </table>
@@ -129,7 +134,7 @@ $conn = connection();
         $sql = " SELECT * FROM RATING LIMIT 5;";
         $result = execute_sql($conn, $sql);
         while ($row = mysqli_fetch_assoc($result)) {
-            echo "<tr><td>" . $row['User_id'] . "</td><td>" . $row['Video_id']. "</td><td>" . $row['Rate']. "</td></tr>";
+            echo "<tr><td>" . $row['User_id'] . "</td><td>" . $row['Video_id'] . "</td><td>" . $row['Rate'] . "</td></tr>";
         }
         ?>
     </table>
@@ -146,7 +151,7 @@ $conn = connection();
         $sql = " SELECT * FROM FOLLOWING LIMIT 5;";
         $result = execute_sql($conn, $sql);
         while ($row = mysqli_fetch_assoc($result)) {
-            echo "<tr><td>" . $row['User_id'] . "</td><td>" . $row['Following_id']. "</td></tr>";
+            echo "<tr><td>" . $row['User_id'] . "</td><td>" . $row['Following_id'] . "</td></tr>";
         }
         ?>
     </table>
