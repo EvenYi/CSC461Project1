@@ -57,6 +57,18 @@
             background-attachment: fixed;
         }
 
+        .usercommenttable {
+            height: 450px;
+            padding: 5px;
+            overflow: auto;
+        }
+        .useruploadtable{
+            height: 100%;
+            padding: 2px;
+            overflow: auto;
+
+        }
+
         table {
             margin: 0 auto;
             /* or margin: 0 auto 0 auto */
@@ -74,10 +86,7 @@
     <table width=100% height="770px" style="background-color: #fff;" cellspacing="2">
         <tr>
             <td width="80%" height="15%" style="background-color: #fefefe;" class="head-background">
-
                 <h1 class="alert-title">URTube</h1>
-
-
             </td>
             <td width="20%" height="15%" style="background-color:#FFC70A ;">
                 <div>
@@ -94,20 +103,24 @@
                 </div>
             </td>
             <td rowspan="2" width="20%" height="70%" style="background-color:#6aa9ff;">
-                <table width="100% " height="65%" id="useruploadTable">
-
-                </table>
+                <div class="useruploadtable">
+                    <table width="100% " height="65%" id="useruploadTable"></table>
+                </div>
             </td>
         </tr>
         <tr>
             <td width="80%" height="70%" class="mainblock">
                 <div class="mainblockcenter">
-                    <table width="100% " height="65%" id="userinfoTable">
+                    <div>
+                        <table width="100% " height="65%" id="userinfoTable">
 
-                    </table>
-                    <table width="100% " height="65%" id="usercommentTable">
+                        </table>
+                    </div>
+                    <div class="usercommenttable">
+                        <table width="100% " height="65%" id="usercommentTable">
 
-                    </table>
+                        </table>
+                    </div>
                 </div>
             </td>
         </tr>
@@ -148,88 +161,93 @@
             return vars;
         }
 
-        var obj, dbParam, recentvideo, topratevideo, myObj, x, txt = "";
+        var obj, dbParam, recentvideo, topratevideo, myObj, x, txt1 = "";
         obj = { "Uid": user_id };
         dbParam = JSON.stringify(obj);
 
         userinfo = new XMLHttpRequest();
         userinfo.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
-                txt += "<tr align='center' style='background-color:#C1CBD7 ;' height='10px'>";
-                txt += "<td colspan='5'>User Information</td>";
-                txt += "</tr>";
-                txt += "<tr align='center' style='background-color:#dfd7d7 ;' height='10px'>";
-                txt += "<td>User Name</td>";
-                txt += "<td>Gender</td>";
-                txt += "<td>LV</td>";
-                txt += "</tr>";
+                txt1 += "<tr align='center' style='background-color:#C1CBD7 ;' height='10px'>";
+                txt1 += "<td colspan='5'>User Information</td>";
+                txt1 += "</tr>";
+                txt1 += "<tr align='center' style='background-color:#dfd7d7 ;' height='10px'>";
+                txt1 += "<td>User Name</td>";
+                txt1 += "<td>Gender</td>";
+                txt1 += "<td>LV</td>";
+                txt1 += "</tr>";
                 myObj = JSON.parse(this.responseText);
                 for (x in myObj) {
-                    txt += "<tr align='center' style='background-color:#bfbfbf ;' height='10px'>";
-                    txt += "<td><a href='./userinfo.html?Uid=" + myObj[x].Uid + "''>" + myObj[x].User_name + "</a></td>";
-                    txt += "<td>" + myObj[x].Gender + "</td>";
-                    txt += "<td>" + myObj[x].Authority + "</td>";
-                    txt += "</tr>";
+                    txt1 += "<tr align='center' style='background-color:#bfbfbf ;' height='10px'>";
+                    txt1 += "<td><a href='./userinfo.html?Uid=" + myObj[x].Uid + "''>" + myObj[x].User_name + "</a></td>";
+                    txt1 += "<td>" + myObj[x].Gender + "</td>";
+                    txt1 += "<td>" + myObj[x].Authority + "</td>";
+                    txt1 += "</tr>";
                 }
-                txt += "";
-                document.getElementById('userinfoTable').innerHTML = txt;
+                txt1 += "";
+                document.getElementById('userinfoTable').innerHTML = txt1;
 
             }
         };
         userinfo.open("POST", "userinfo.php", true);
         userinfo.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         userinfo.send("x=" + dbParam);
+        txt1 = "";
 
+        var txt2 = "";
         usercomment = new XMLHttpRequest();
         usercomment.onreadystatechange = function () {
-            txt = "";
             if (this.readyState == 4 && this.status == 200) {
-                txt += "<tr align='center' style='background-color:#C1CBD7 ;' height='10px'>";
-                txt += "<td colspan='5'>His/Her Released Comments</td>";
-                txt += "</tr>";
-                txt += "<tr align='center' style='background-color:#dfd7d7 ;' height='10px'>";
-                txt += "<td>Video Name</td>";
-                txt += "<td>Comment</td>";
-                txt += "<td>Release Date</td>";
-                txt += "</tr>";
+                txt2 += "<tr align='center' style='background-color:#C1CBD7 ;' height='10px'>";
+                txt2 += "<td colspan='5'>His/Her Released Comments</td>";
+                txt2 += "</tr>";
+                txt2 += "<tr align='center' style='background-color:#dfd7d7 ;' height='10px'>";
+                txt2 += "<td>Video Name</td>";
+                txt2 += "<td>Comment</td>";
+                txt2 += "<td>Release Date</td>";
+                txt2 += "</tr>";
                 myObj = JSON.parse(this.responseText);
                 for (x in myObj) {
-                    txt += "<tr align='center' style='background-color:#bfbfbf ;' height='10px'>";
-                    txt += "<td><a href='./video.html?Vid=" + myObj[x].Vid + "''>" + myObj[x].Video_name + "</a></td>";
-                    txt += "<td>" + myObj[x].Content + "</td>";
-                    txt += "<td>" + myObj[x].Release_date + "</td>";
-                    txt += "</tr>";
+                    txt2 += "<tr align='center' style='background-color:#bfbfbf ;' height='10px'>";
+                    txt2 += "<td><a href='./video.html?Vid=" + myObj[x].Vid + "''>" + myObj[x].Video_name + "</a></td>";
+                    txt2 += "<td>" + myObj[x].Content + "</td>";
+                    txt2 += "<td>" + myObj[x].Release_date + "</td>";
+                    txt2 += "</tr>";
                 }
-                txt += "";
-                document.getElementById('usercommentTable').innerHTML = txt;
+                txt2 += "";
+                document.getElementById('usercommentTable').innerHTML = txt2;
 
             }
         };
         usercomment.open("POST", "usercomment.php", true);
         usercomment.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         usercomment.send("x=" + dbParam);
+        txt2 = "";
+
+        var txt3 = "";
 
         userupload = new XMLHttpRequest();
         userupload.onreadystatechange = function () {
             txt = "";
             if (this.readyState == 4 && this.status == 200) {
-                txt += "<tr align='center' style='background-color:#C1CBD7 ;' height='10px'>";
-                txt += "<td colspan='5'>His/Her Uploaded Videos</td>";
-                txt += "</tr>";
+                txt3 += "<tr align='center' style='background-color:#C1CBD7 ;' height='10px'>";
+                txt3 += "<td colspan='5'>His/Her Uploaded Videos</td>";
+                txt3 += "</tr>";
                 myObj = JSON.parse(this.responseText);
                 for (x in myObj) {
-                    txt += "<tr align='center' style='background-color:#bfbfbf ;' height='10px'>";
-                    txt += "<td><a href='./video.html?Vid=" + myObj[x].Vid + "''>" + myObj[x].Video_name + "</a></td>";
-                    txt += "</tr>";
+                    txt3 += "<tr align='center' style='background-color:#bfbfbf ;' height='10px'>";
+                    txt3 += "<td><a href='./video.html?Vid=" + myObj[x].Vid + "''>" + myObj[x].Video_name + "</a></td>";
+                    txt3 += "</tr>";
                 }
                 txt += "";
-                document.getElementById('useruploadTable').innerHTML = txt;
+                document.getElementById('useruploadTable').innerHTML = txt3;
 
             }
         };
         userupload.open("POST", "userupload.php", true);
         userupload.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         userupload.send("x=" + dbParam);
+        txt3 = "";
     </script>
 
 
