@@ -91,6 +91,7 @@
                 <div class="navigate">
                     <a class="navigateblock" href="./index.html">Home</a>
                     <a class="navigateblock" href="./signup.html">Sign Up</a>
+                    <a class="navigateblock" href="./user.html">Upload Video</a>
                 </div>
             </td>
 
@@ -156,9 +157,8 @@
             document.getElementById('loginTable').innerHTML = login_txt;
 
         } else {
-
-            login_txt += "<tr align='center'><td><a href='./login.html'>LOGIN</a></td></tr>"
-            document.getElementById('loginTable').innerHTML = login_txt;
+            alert("Please Login!");
+            location.replace("./login.html");
         }
 
         var user_id = getCookie("uid");

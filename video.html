@@ -57,6 +57,14 @@
             background-attachment: fixed;
         }
 
+        .commentblock {
+            margin: auto;
+            border: 3px solid #FFC70A;
+            background-color: #fff;
+            opacity: 0.95;
+
+        }
+
         table {
             margin: 0 auto;
             /* or margin: 0 auto 0 auto */
@@ -90,6 +98,7 @@
                 <div class="navigate">
                     <a class="navigateblock" href="./index.html">Home</a>
                     <a class="navigateblock" href="./signup.html">Sign Up</a>
+                    <a class="navigateblock" href="./user.html">Upload Video</a>
                 </div>
             </td>
             <td rowspan="2" width="20%" height="70%" style="background-color:#6aa9ff;">
@@ -107,6 +116,27 @@
                     <table width="100% " height="65%" id="videocommentTable">
 
                     </table>
+
+                </div>
+                </br>
+                <div class="commentblock">
+                    <table width="100% " id="videocommentTable">
+                        <tr align="center">
+                            <td>
+                                <h4>Post a Comment</h4>
+                            </td>
+                        </tr>
+                        <tr align="center">
+                            <td>
+                                <textarea id="commentcontent" rows="4" cols="50"></textarea>
+                            </td>
+                        </tr>
+                        <tr align="center">
+                            <td><button onclick="postcomment()">Post</button></td>
+                        </tr>
+
+                    </table>
+
                 </div>
             </td>
         </tr>
@@ -125,10 +155,6 @@
             lv = getCookie("lv");
             login_txt += "<tr align='center'><td><a href='./user.html?Uid=" + uid + "'>" + username + "</a></td>";
             login_txt += "<td><button onclick='signout()'>Sign Out</button></td></tr>";
-            console.log(uid);
-            console.log(username);
-            console.log(lv);
-            console.log(login_txt);
             document.getElementById('loginTable').innerHTML = login_txt;
 
         } else {
@@ -232,6 +258,46 @@
         videotag.open("POST", "videotag.php", true);
         videotag.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         videotag.send("x=" + dbParam);
+
+        function postcomment() {
+            if (checkCookie()) {
+                var commentcontent;
+                var user_id = getCookie("uid");
+                var video_id = getUrlVars()["Vid"];
+
+                commentcontent = document.getElementById('commentcontent').value;
+                if (!commentcontent) {
+                    alert("Input cannot be empty!")
+                    return;
+                }
+
+                var obj, dbParam, uploadv, myObj, x, txt = "";
+                obj = { "Video_id": video_id, "User_id": user_id, "Content": commentcontent };
+                dbParam = JSON.stringify(obj);
+                postcontent = new XMLHttpRequest();
+                postcontent.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        myObj = JSON.parse(this.responseText);
+                        if (myObj.result) {
+                            alert("Post Success!");
+                            location.reload();
+
+                        }
+                        else {
+                            alert("Post Fail!");
+                        }
+
+                    }
+                };
+                postcontent.open("POST", "postcomment.php", true);
+                postcontent.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                postcontent.send("x=" + dbParam);
+
+            } else {
+                alert("Please Login!");
+                location.replace("./login.html");
+            }
+        }
     </script>
 
 
