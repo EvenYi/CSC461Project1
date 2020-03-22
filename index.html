@@ -85,11 +85,17 @@
             height: 200px;
             overflow: scroll;
         }
+        .ratetable{
+            height: 100%;
+            padding: 2px;
+            overflow: auto;
+        }
 
         table {
             margin: 0 auto;
             /* or margin: 0 auto 0 auto */
         }
+
     </style>
 </head>
 
@@ -125,8 +131,10 @@
                 </div>
             </td>
             <td rowspan="2" width="20%" height="70%" style="background-color:#6aa9ff;">
+                <div class="ratetable">
                 <table align="center" width="100% " height="65%" id="rateTable">
                 </table>
+                <div>
             </td>
         </tr>
         <tr>
@@ -177,74 +185,72 @@
 
 
 
-        var obj, dbParam, recentvideo, topratevideo, myObj, x, txt = "";
+        var obj, dbParam, recentvideo, topratevideo, myObj, x, txt1 = "";
         obj = { "limit": 2 };
         dbParam = JSON.stringify(obj);
         recentvideo = new XMLHttpRequest();
         recentvideo.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
-                txt += "<tr align='center' style='background-color:#C1CBD7 ;' height='10px'>";
-                txt += "<td colspan='5'>Recently Uploaded Videos</td>";
-                txt += "</tr>";
-                txt += "<tr align='center' style='background-color:#dfd7d7 ;' height='10px'>";
-                txt += "<td>Video_name</td>";
-                txt += "<td>Video_url</td>";
-                txt += "<td>Upload_date</td>";
-                txt += "<td>Intro</td>";
-                txt += "<td>User_name</td>";
-                txt += "</tr>";
+                txt1 += "<tr align='center' style='background-color:#C1CBD7 ;' height='10px'>";
+                txt1 += "<td colspan='5'>Recently Uploaded Videos</td>";
+                txt1 += "</tr>";
+                txt1 += "<tr align='center' style='background-color:#dfd7d7 ;' height='10px'>";
+                txt1 += "<td>Video_name</td>";
+                txt1 += "<td>Video_url</td>";
+                txt1 += "<td>Upload_date</td>";
+                txt1 += "<td>Intro</td>";
+                txt1 += "<td>User_name</td>";
+                txt1 += "</tr>";
                 myObj = JSON.parse(this.responseText);
                 for (x in myObj) {
-                    txt += "<tr align='center' style='background-color:#bfbfbf ;' height='10px'>";
-                    txt += "<td><a href='./video.html?Vid=" + myObj[x].Vid + "''>" + myObj[x].Video_name + "</a></td>";
-                    txt += "<td>" + myObj[x].Video_url + "</td>";
-                    txt += "<td>" + myObj[x].Upload_date + "</td>";
-                    txt += "<td>" + myObj[x].Intro + "</td>";
-                    txt += "<td><a href='./userinfo.html?Uid=" + myObj[x].Uid + "''>" + myObj[x].User_name + "</a></td>";
-                    txt += "</tr>";
+                    txt1 += "<tr align='center' style='background-color:#bfbfbf ;' height='10px'>";
+                    txt1 += "<td><a href='./video.html?Vid=" + myObj[x].Vid + "''>" + myObj[x].Video_name + "</a></td>";
+                    txt1 += "<td>" + myObj[x].Video_url + "</td>";
+                    txt1 += "<td>" + myObj[x].Upload_date + "</td>";
+                    txt1 += "<td>" + myObj[x].Intro + "</td>";
+                    txt1 += "<td><a href='./userinfo.html?Uid=" + myObj[x].Uid + "''>" + myObj[x].User_name + "</a></td>";
+                    txt1 += "</tr>";
                 }
-                txt += "";
-                document.getElementById('vidoeTable').innerHTML = txt;
+                document.getElementById('vidoeTable').innerHTML = txt1;
 
             }
         };
         recentvideo.open("POST", "select_video.php", true);
         recentvideo.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         recentvideo.send("x=" + dbParam);
+        txt1="";
 
         obj = { "limit": 10 };
-
+        var txt2="";
         dbParam = JSON.stringify(obj);
         topratevideo = new XMLHttpRequest();
         topratevideo.onreadystatechange = function () {
-            txt = " ";
             if (this.readyState == 4 && this.status == 200) {
-                txt += "<tr align='center' style='background-color:#C1CBD7 ;' height='10px'>";
-                txt += "<td colspan='5'>Top 5 Rate Videos</td>";
-                txt += "</tr>";
-                txt += "<tr align='center' style='background-color:#dfd7d7 ;' height='10px'>";
-                txt += "<td>Video Name</td>";
-                txt += "<td>Rate</td>";
-                txt += "</tr>";
+                txt2 += "<tr align='center' style='background-color:#C1CBD7 ;' height='10px'>";
+                txt2 += "<td colspan='5'>Top 5 Rate Videos</td>";
+                txt2 += "</tr>";
+                txt2 += "<tr align='center' style='background-color:#dfd7d7 ;' height='10px'>";
+                txt2 += "<td>Video Name</td>";
+                txt2 += "<td>Rate</td>";
+                txt2 += "</tr>";
                 myObj = JSON.parse(this.responseText);
                 for (x in myObj) {
-                    txt += "<tr align='center' style='background-color:#bfbfbf ;' height='10px'>";
-                    txt += "<td><a href='./video.html?Vid=" + myObj[x].Vid + "''>" + myObj[x].Video_name + "</a></td>";
-                    txt += "<td>" + Number(myObj[x].Rate).toFixed(2) + "</td>";
-                    txt += "</tr>";
+                    txt2 += "<tr align='center' style='background-color:#bfbfbf ;' height='10px'>";
+                    txt2 += "<td><a href='./video.html?Vid=" + myObj[x].Vid + "''>" + myObj[x].Video_name + "</a></td>";
+                    txt2 += "<td>" + Number(myObj[x].Rate).toFixed(2) + "</td>";
+                    txt2 += "</tr>";
                 }
-                txt += "";
-                document.getElementById('rateTable').innerHTML = txt;
+                document.getElementById('rateTable').innerHTML = txt2;
 
             }
         };
         topratevideo.open("POST", "top_rate.php", true);
         topratevideo.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         topratevideo.send("x=" + dbParam);
+        txt2="";
 
         function searchVideo() {
             var obj, dbParam, searchvideo, myObj, x, txt = "";
-
             obj = { "content": "a" };
             content = document.getElementById('searchInput').value;
             if (!content) {
