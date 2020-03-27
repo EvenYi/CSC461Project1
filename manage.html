@@ -57,13 +57,14 @@
         }
 
 
-        .commenttable {
-            height: 500px;
+        .tagtable {
+            height: 400px;
             overflow: auto;
 
         }
 
-        .useruploadtable {
+        .usertable {
+            margin: auto;
             height: 500px;
             overflow: auto;
         }
@@ -114,40 +115,33 @@
             <td>
                 <div class="container">
                     <div class="row">
-                        <div class="col-md-4" style="background-color:#cccccc;border: 3px solid #FFC70A;">
-                            <h3 align="center">Upload Vidoe</h3>
+                        <div class="col-md-6" style="background-color:#cccccc;border: 3px solid #FFC70A;">
+                            <h3 align="center">Add New Tag</h3>
                             <table>
                                 <tr>
-                                    <td>Video Name</td>
-                                    <td><input type="text" id="videoname" name="videoname"></td>
+                                    <td>Tag Name</td>
+                                    <td><input type="text" id="newtag" name="newtag"></td>
+                                    <td>
+                                    <td align="center" colspan="2"><button onclick="addtag()">Add</button></td>
                                 </tr>
-                                <tr>
-                                    <td>Video Url</td>
-                                    <td><input type="text" id="videourl" name="videourl"></td>
-                                </tr>
-                                <tr>
-                                    <td>Vidoe Intro</td>
-                                    <td><input type="text" id="videointro" name="videointro"></td>
-                                </tr>
-                                <tr>
-
-                                    <td align="center" colspan="2"><button onclick="uploadvideo()">upload</button></td>
-                                </tr>
-
                             </table>
-
-                        </div>
-                        <div class="col-md-4" style="background-color:#fefefe;border: 3px solid #6aa9ff;">
-                            <h3 align="center">Your comments</h3>
-                            <div class="commenttable">
-                                <table id="usercommentTable"></table>
+                            <h3 align="center">Manage Tags</h3>
+                            <div class="tagtable">
+                                <table id="tagmanagementTable"></table>
                             </div>
 
                         </div>
-                        <div class="col-md-4" style="background-color:#cccccc;border: 3px solid #FFC70A;">
-                            <h3 align="center">Your Videos</h3>
-                            <div class="useruploadtable">
-                                <table id="useruploadTable"></table>
+                        <div class="col-md-6" style="background-color:#fefefe;border: 3px solid #6aa9ff;">
+                            <h3 align="center">Manage Users</h3>
+                            <div class="usertable">
+                                <table id="usermanagementTable">
+                                    <tr align='center' style='background-color:#dfd7d7 ;' height='10px'>
+                                        <td>User Name</td>
+                                        <td>Authority</td>
+                                        <td colspan="2" >Change Authority</td>
+                                        <td>Delete User</td>
+                                    </tr>
+                                </table>
                             </div>
 
                         </div>
@@ -164,7 +158,7 @@
     <script>
         var login_txt = "";
         if (checkCookie()) {
-            var username, uid, lv;
+            var username, uid, lv, mag = "";
             uid = getCookie("uid");
             username = getCookie("username");
             lv = getCookie("lv");
@@ -175,6 +169,11 @@
                 mag = "<a class='navigateblock' href='./manage.html'>Management</a>"
                 var div = document.getElementById('navigatediv');
                 div.innerHTML += mag;
+            } else {
+                alert("You are not a manager");
+                location.replace("./index.html");
+
+
             }
 
         } else {
@@ -188,25 +187,25 @@
         obj = { "Branch": 1, "Uid": user_id };
         dbParam = JSON.stringify(obj);
 
-        userstatistic1 = new XMLHttpRequest();
-        userstatistic1.onreadystatechange = function () {
+        totalnumbers = new XMLHttpRequest();
+        totalnumbers.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 txt1 += "<tr align='center' style='background-color:#C1CBD7 ;' height='10px'>";
-                txt1 += "<td colspan='2'>User Statistic Information</td>";
+                txt1 += "<td colspan='2'>URTube Statistic Information</td>";
                 txt1 += "</tr>";
                 myObj = JSON.parse(this.responseText);
                 for (x in myObj) {
                     txt1 += "<tr style='background-color:#bfbfbf ;' height='10px'>";
-                    txt1 += "<td>User Name</td>"
-                    txt1 += "<td align='center' >" + myObj[x].User_name + "</td>"
+                    txt1 += "<td>Total number of users</td>"
+                    txt1 += "<td align='center' >" + myObj[x].U_n + "</td>"
                     txt1 += "</tr>";
                     txt1 += "<tr style='background-color:#bfbfbf ;' height='10px'>";
-                    txt1 += "<td>Gender</td>"
-                    txt1 += "<td  align='center'>" + myObj[x].Gender + "</td>"
+                    txt1 += "<td>Total number of videos</td>"
+                    txt1 += "<td  align='center'>" + myObj[x].V_n + "</td>"
                     txt1 += "</tr>";
                     txt1 += "<tr style='background-color:#bfbfbf ;' height='10px'>";
-                    txt1 += "<td>Uploaded videos</td>"
-                    txt1 += "<td align='center'>" + myObj[x].V_numbers + "</td>"
+                    txt1 += "<td>Total number of tags</td>"
+                    txt1 += "<td align='center'>" + myObj[x].T_n + "</td>"
                     txt1 += "</tr>";
                 }
                 document.getElementById('statisticTable1').innerHTML = txt1;
@@ -214,173 +213,212 @@
         };
 
 
-        userstatistic1.open("POST", "userstatistic.php", true);
-        userstatistic1.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        userstatistic1.send("x=" + dbParam);
+        totalnumbers.open("POST", "statistic.php", true);
+        totalnumbers.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        totalnumbers.send("x=" + dbParam);
         console.log(dbParam);
         txt1 = "";
 
         var txt2 = "";
-        obj = { "Branch": 2, "Uid": user_id };
-        dbParam = JSON.stringify(obj);
-
-        userstatistic2 = new XMLHttpRequest();
-        userstatistic2.onreadystatechange = function () {
+        taginfo = new XMLHttpRequest();
+        taginfo.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
+                txt2 += "<tr align='center' style='background-color:#dfd7d7 ;' height='10px'>";
+                txt2 += "<td>Tag</td>";
+                txt2 += "<td>New Tagname</td>";
+                txt2 += "<td>Update Tag</td>";
+                txt2 += "<td>Delete Tag</td>";
+                txt2 += "</tr>";
                 myObj = JSON.parse(this.responseText);
                 for (x in myObj) {
-                    txt2 += "<tr style='background-color:#bfbfbf ;' height='10px'>";
-                    txt2 += "<td>Number of posted comments</td>"
-                    txt2 += "<td align='center'>" + myObj[x].C_numbers + "</td>"
+                    txt2 += "<tr align='center' style='background-color:#bfbfbf ;' height='10px'>";
+                    txt2 += "<td>" + myObj[x].Tag_name + "</td>";
+                    txt2 += "<td><input type='text' id='updatetag" + myObj[x].T_id + "' name='updatetag'></td>"
+                    txt2 += "<td><button onclick='updatetag(" + myObj[x].T_id + ")'>Update</button></td>";
+                    txt2 += "<td><button onclick='deletetag(" + myObj[x].T_id + ")'>Delete</button></td>";
                     txt2 += "</tr>";
                 }
-                document.getElementById('statisticTable2').innerHTML = txt2;
+                txt2 += "";
+                document.getElementById('tagmanagementTable').innerHTML = txt2;
 
             }
         };
-        userstatistic2.open("POST", "userstatistic.php", true);
-        userstatistic2.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        userstatistic2.send("x=" + dbParam);
+        taginfo.open("POST", "taginfo.php", true);
+        taginfo.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        taginfo.send("x=" + dbParam);
         txt2 = "";
 
         var txt3 = "";
-        usercomment = new XMLHttpRequest();
-        usercomment.onreadystatechange = function () {
+        userinfo = new XMLHttpRequest();
+        userinfo.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
-                txt3 += "<tr align='center' style='background-color:#dfd7d7 ;' height='10px'>";
-                txt3 += "<td>Comment</td>";
-                txt3 += "<td>Video Name</td>";
-                txt3 += "<td>Operation</td>";
-                txt3 += "</tr>";
                 myObj = JSON.parse(this.responseText);
                 for (x in myObj) {
                     txt3 += "<tr align='center' style='background-color:#bfbfbf ;' height='10px'>";
-                    txt3 += "<td>" + myObj[x].Content + "</td>";
-                    txt3 += "<td><a href='./video.html?Vid=" + myObj[x].Vid + "''>" + myObj[x].Video_name + "</a></td>";
-                    txt3 += "<td><button onclick='deletecomment(" + myObj[x].Comment_id + ")'>Delete</button></td>";
+                    txt3 += "<td>" + myObj[x].User_name + "</td>";
+                    txt3 += "<td>" + myObj[x].Authority + "</td>";
+                    txt3 += "<td> <select id='auth" + myObj[x].Uid + "'>";
+                    txt3 += "<option value='-'>-</option> ";
+                    txt3 += "<option value='1'>Lv.1</option> ";
+                    txt3 += "<option value='2'>Lv.2</option> ";
+                    txt3 += "<option value='3'>Lv.3</option> ";
+                    txt3 += "<option value='4'>Lv.4</option> ";
+                    txt3 += "<option value='5'>Lv.5</option> ";
+                    txt3 += "<option value='6'>Lv.6</option> ";
+                    txt3 += "</select></td>";
+                    txt3 += "<td><button onclick='updateauth(" + myObj[x].Uid + ")'>Update</button></td>";
+                    txt3 += "<td><button onclick='deleteuser(" + myObj[x].Uid + ")'>Delete</button></td>";
                     txt3 += "</tr>";
                 }
                 txt3 += "";
-                document.getElementById('usercommentTable').innerHTML = txt3;
+                var div = document.getElementById('usermanagementTable');
+                div.innerHTML += txt3;
 
             }
         };
-        usercomment.open("POST", "usercomment.php", true);
-        usercomment.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        usercomment.send("x=" + dbParam);
+        userinfo.open("POST", "alluserinfo.php", true);
+        userinfo.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        userinfo.send("x=" + dbParam);
         txt3 = "";
 
-        var txt4 = "";
-        userupload = new XMLHttpRequest();
-        userupload.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                txt4 += "<tr align='center' style='background-color:#C1CBD7 ;' height='10px'>";
-                txt4 += "<td>Video Name</td>";
-                txt4 += "<td>Upload Date</td>";
-                txt4 += "<td>Operation</td>";
-                txt4 += "</tr>";
-                myObj = JSON.parse(this.responseText);
-                for (x in myObj) {
-                    txt4 += "<tr align='center' style='background-color:#bfbfbf ;' height='10px'>";
-                    txt4 += "<td><a href='./video.html?Vid=" + myObj[x].Vid + "''>" + myObj[x].Video_name + "</a></td>";
-                    txt4 += "<td>" + myObj[x].Upload_date + "</td>";
-                    txt4 += "<td><button onclick='deletevideo(" + myObj[x].Vid + ")'>Delete</button></td>";
-                    txt4 += "</tr>";
 
+
+
+        function deletetag(T_id) {
+            var obj, dbParam, deleteoperation, myObj, x, txt = "";
+
+            obj = { "T_id": T_id };
+            dbParam = JSON.stringify(obj);
+            deleteoperation = new XMLHttpRequest();
+            deleteoperation.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    myObj = JSON.parse(this.responseText);
+                    if (myObj.result) {
+                        alert("Deletion Success!");
+                        location.reload();
+
+                    }
+                    else {
+                        alert("Deletion Fail!");
+                    }
                 }
-                document.getElementById('useruploadTable').innerHTML = txt4;
-
+            };
+            deleteoperation.open("POST", "deletetag.php", true);
+            deleteoperation.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            deleteoperation.send("x=" + dbParam);
+        }
+        function updatetag(T_id) {
+            var obj, dbParam, updateoperation, myObj, x, tag_n, txt = "";
+            input_id = "updatetag" + T_id;
+            tag_n = document.getElementById(input_id).value;
+            if (!tag_n) {
+                alert("Input cannot be empty!")
+                return;
             }
-        };
-        userupload.open("POST", "userupload.php", true);
-        userupload.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        userupload.send("x=" + dbParam);
-        txt4 = ""
-
-        function deletecomment(comment_id) {
-            var obj, dbParam, deleteoperation, myObj, x, txt = "";
-
-            obj = { "Comment_id": comment_id };
+            obj = { "T_id": T_id, "Tag_name": tag_n };
             dbParam = JSON.stringify(obj);
-            deleteoperation = new XMLHttpRequest();
-            deleteoperation.onreadystatechange = function () {
+            updateoperation = new XMLHttpRequest();
+            updateoperation.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
                     myObj = JSON.parse(this.responseText);
                     if (myObj.result) {
-                        alert("Deletion Success!");
+                        alert("Update Success!");
                         location.reload();
 
                     }
                     else {
-                        alert("Deletion Fail!");
+                        alert("Update Fail!");
                     }
                 }
             };
-            deleteoperation.open("POST", "deletecomment.php", true);
-            deleteoperation.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            deleteoperation.send("x=" + dbParam);
+            updateoperation.open("POST", "updatetag.php", true);
+            updateoperation.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            updateoperation.send("x=" + dbParam);
         }
-        function deletevideo(video_id) {
-            var obj, dbParam, deleteoperation, myObj, x, txt = "";
-
-            obj = { "Vid": video_id };
-            dbParam = JSON.stringify(obj);
-            deleteoperation = new XMLHttpRequest();
-            deleteoperation.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    myObj = JSON.parse(this.responseText);
-                    if (myObj.result) {
-                        alert("Deletion Success!");
-                        location.reload();
-
-                    }
-                    else {
-                        alert("Deletion Fail!");
-                    }
-                }
-            };
-            deleteoperation.open("POST", "deletevideo.php", true);
-            deleteoperation.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            deleteoperation.send("x=" + dbParam);
-        }
-        function uploadvideo() {
-            var videoname, videourl, videointro;
-            var user_id = getCookie("uid");
-            videoname = document.getElementById('videoname').value;
-            videourl = document.getElementById('videourl').value;
-            videointro = document.getElementById('videointro').value;
-            console.log(videoname);
-            console.log(videourl);
-            console.log(videointro);
-            console.log(user_id);
-            if (!videoname || !videourl || !videointro) {
+        function addtag() {
+            var newtag;
+            newtag = document.getElementById('newtag').value;
+            if (!newtag) {
                 alert("Input cannot be empty!")
                 return;
             }
 
             var obj, dbParam, uploadv, myObj, x, txt = "";
-            obj = { "Uploader_id": user_id, "Video_name": videoname, "Video_url": videourl, "Intro": videointro };
+            obj = { "Tag_name": newtag };
             dbParam = JSON.stringify(obj);
             uploadv = new XMLHttpRequest();
             uploadv.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
                     myObj = JSON.parse(this.responseText);
                     if (myObj.result) {
-                        alert("Upload Success!");
+                        alert("Add Success!");
                         location.reload();
 
                     }
                     else {
-                        alert("Upload Fail!");
+                        alert("Add Fail!");
 
                     }
 
                 }
             };
-            uploadv.open("POST", "uploadvideo.php", true);
+            uploadv.open("POST", "addtag.php", true);
             uploadv.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             uploadv.send("x=" + dbParam);
 
+        }
+        function updateauth(Uid) {
+            var obj, dbParam, updateoperation, myObj, x, tag_n, txt = "";
+            input_auth = "auth" + Uid;
+            console.log(input_auth);
+            auth = document.getElementById(input_auth).value;
+            if (auth == '-') {
+                alert("Select cannot be empty!")
+                return;
+            }
+            obj = { "Uid": Uid, "Authority": parseInt(auth) };
+            console.log(obj)
+            dbParam = JSON.stringify(obj);
+            updateoperation = new XMLHttpRequest();
+            updateoperation.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    myObj = JSON.parse(this.responseText);
+                    if (myObj.result) {
+                        alert("Update Success!");
+                        location.reload();
+
+                    }
+                    else {
+                        alert("Update Fail!");
+                    }
+                }
+            };
+            updateoperation.open("POST", "userauthupdate.php", true);
+            updateoperation.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            updateoperation.send("x=" + dbParam);
+        }
+        function deleteuser(Uid) {
+            var obj, dbParam, deleteoperation, myObj, x, txt = "";
+
+            obj = { "Uid": Uid };
+            dbParam = JSON.stringify(obj);
+            deleteoperation = new XMLHttpRequest();
+            deleteoperation.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    myObj = JSON.parse(this.responseText);
+                    if (myObj.result) {
+                        alert("Deletion Success!");
+                        location.reload();
+
+                    }
+                    else {
+                        alert("Deletion Fail!");
+                    }
+                }
+            };
+            deleteoperation.open("POST", "deleteuser.php", true);
+            deleteoperation.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            deleteoperation.send("x=" + dbParam);
         }
 
     </script>

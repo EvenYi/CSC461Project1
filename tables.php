@@ -73,7 +73,7 @@ $conn = connection();
         </tr>
         <tr>
             <td>Comment_id</td>
-            <td>Video_id/td>
+            <td>Video_id</td>
             <td>User_id</td>
             <td>Content</td>
             <td>Release_date</td>
