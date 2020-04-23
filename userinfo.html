@@ -62,7 +62,8 @@
             padding: 5px;
             overflow: auto;
         }
-        .useruploadtable{
+
+        .useruploadtable {
             height: 100%;
             padding: 2px;
             overflow: auto;
@@ -175,6 +176,8 @@
                 txt1 += "<td>User Name</td>";
                 txt1 += "<td>Gender</td>";
                 txt1 += "<td>LV</td>";
+                txt1 += "<td>Followers</td>";
+                txt1 += "<td>Following</td>";
                 txt1 += "</tr>";
                 myObj = JSON.parse(this.responseText);
                 for (x in myObj) {
@@ -182,10 +185,27 @@
                     txt1 += "<td><a href='./userinfo.html?Uid=" + myObj[x].Uid + "''>" + myObj[x].User_name + "</a></td>";
                     txt1 += "<td>" + myObj[x].Gender + "</td>";
                     txt1 += "<td>" + myObj[x].Authority + "</td>";
-                    txt1 += "</tr>";
+
                 }
                 txt1 += "";
-                document.getElementById('userinfoTable').innerHTML = txt1;
+                userfans = new XMLHttpRequest();
+                userfans.onreadystatechange = function () {
+                    txt = "";
+                    if (this.readyState == 4 && this.status == 200) {
+                        myObj = JSON.parse(this.responseText);
+                        for (x in myObj) {
+                            txt1 += "<td>" + myObj[x].Followers + "</td>";
+                            txt1 += "<td>" + myObj[x].Following + "</td>";
+                        }
+                        txt1 += "</tr>";
+                        document.getElementById('userinfoTable').innerHTML = txt1;
+                    }
+                };
+                userfans.open("POST", "fans.php", true);
+                userfans.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                userfans.send("x=" + dbParam);
+
+
 
             }
         };
